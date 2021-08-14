@@ -41,6 +41,15 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.RecordingTimeErrorLabel = new System.Windows.Forms.Label();
             this.StartRecordingCheckBox = new System.Windows.Forms.CheckBox();
             this.AutoRecordCheckBox = new System.Windows.Forms.CheckBox();
+            this.label0 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.DataLabel = new System.Windows.Forms.Label();
+            this.ICheckBox = new System.Windows.Forms.CheckBox();
+            this.QCheckBox = new System.Windows.Forms.CheckBox();
+            this.ModCheckBox = new System.Windows.Forms.CheckBox();
+            this.ArgCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.ThresholdValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -135,7 +144,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             // StartRecordingCheckBox
             // 
             this.StartRecordingCheckBox.AutoSize = true;
-            this.StartRecordingCheckBox.Location = new System.Drawing.Point(0, 224);
+            this.StartRecordingCheckBox.Location = new System.Drawing.Point(0, 343);
             this.StartRecordingCheckBox.Name = "StartRecordingCheckBox";
             this.StartRecordingCheckBox.Size = new System.Drawing.Size(134, 24);
             this.StartRecordingCheckBox.TabIndex = 10;
@@ -152,10 +161,108 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.AutoRecordCheckBox.Text = "Full Signal Record";
             this.AutoRecordCheckBox.UseVisualStyleBackColor = true;
             // 
+            // label0
+            // 
+            this.label0.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label0.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label0.Location = new System.Drawing.Point(0, 46);
+            this.label0.Name = "label0";
+            this.label0.Size = new System.Drawing.Size(255, 2);
+            this.label0.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(0, 125);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(255, 2);
+            this.label1.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(0, 216);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(255, 2);
+            this.label2.TabIndex = 14;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label3.Location = new System.Drawing.Point(0, 333);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(255, 2);
+            this.label3.TabIndex = 15;
+            // 
+            // DataLabel
+            // 
+            this.DataLabel.AutoSize = true;
+            this.DataLabel.Location = new System.Drawing.Point(0, 229);
+            this.DataLabel.Name = "DataLabel";
+            this.DataLabel.Size = new System.Drawing.Size(44, 20);
+            this.DataLabel.TabIndex = 16;
+            this.DataLabel.Text = "Data:";
+            // 
+            // ICheckBox
+            // 
+            this.ICheckBox.AutoSize = true;
+            this.ICheckBox.Location = new System.Drawing.Point(0, 262);
+            this.ICheckBox.Name = "ICheckBox";
+            this.ICheckBox.Size = new System.Drawing.Size(35, 24);
+            this.ICheckBox.TabIndex = 17;
+            this.ICheckBox.Text = "I";
+            this.ICheckBox.UseVisualStyleBackColor = true;
+            // 
+            // QCheckBox
+            // 
+            this.QCheckBox.AutoSize = true;
+            this.QCheckBox.Location = new System.Drawing.Point(122, 262);
+            this.QCheckBox.Name = "QCheckBox";
+            this.QCheckBox.Size = new System.Drawing.Size(42, 24);
+            this.QCheckBox.TabIndex = 18;
+            this.QCheckBox.Text = "Q";
+            this.QCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ModCheckBox
+            // 
+            this.ModCheckBox.AutoSize = true;
+            this.ModCheckBox.Location = new System.Drawing.Point(0, 293);
+            this.ModCheckBox.Name = "ModCheckBox";
+            this.ModCheckBox.Size = new System.Drawing.Size(88, 24);
+            this.ModCheckBox.TabIndex = 19;
+            this.ModCheckBox.Text = "Modulus";
+            this.ModCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ArgCheckBox
+            // 
+            this.ArgCheckBox.AutoSize = true;
+            this.ArgCheckBox.Location = new System.Drawing.Point(122, 293);
+            this.ArgCheckBox.Name = "ArgCheckBox";
+            this.ArgCheckBox.Size = new System.Drawing.Size(97, 24);
+            this.ArgCheckBox.TabIndex = 20;
+            this.ArgCheckBox.Text = "Argument";
+            this.ArgCheckBox.UseVisualStyleBackColor = true;
+            // 
             // ProcessorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ArgCheckBox);
+            this.Controls.Add(this.ModCheckBox);
+            this.Controls.Add(this.QCheckBox);
+            this.Controls.Add(this.ICheckBox);
+            this.Controls.Add(this.DataLabel);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label0);
             this.Controls.Add(this.AutoRecordCheckBox);
             this.Controls.Add(this.StartRecordingCheckBox);
             this.Controls.Add(this.RecordingTimeErrorLabel);
@@ -168,7 +275,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.Controls.Add(this.ThresholdValue);
             this.Controls.Add(this.ThresholdLabel);
             this.Name = "ProcessorPanel";
-            this.Size = new System.Drawing.Size(255, 253);
+            this.Size = new System.Drawing.Size(255, 378);
             ((System.ComponentModel.ISupportInitialize)(this.ThresholdValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -189,5 +296,14 @@ namespace SDRSharp.Plugin.SignalRecorder
         private System.Windows.Forms.Label RecordingTimeErrorLabel;
         private System.Windows.Forms.CheckBox StartRecordingCheckBox;
         private System.Windows.Forms.CheckBox AutoRecordCheckBox;
+        private System.Windows.Forms.Label label0;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label DataLabel;
+        private System.Windows.Forms.CheckBox ICheckBox;
+        private System.Windows.Forms.CheckBox QCheckBox;
+        private System.Windows.Forms.CheckBox ModCheckBox;
+        private System.Windows.Forms.CheckBox ArgCheckBox;
     }
 }

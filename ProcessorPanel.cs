@@ -28,30 +28,53 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             ChangeFolderBtn.MouseClick += new MouseEventHandler(ChangeFolderBtnClicked);
 
-            AutoRecordCheckBox.MouseClick += new MouseEventHandler(AutoRecordBtnClick);
+            AutoRecordCheckBox.MouseClick += new MouseEventHandler(AutoRecordBtnClicked);
 
             RecordingTimeValue.TextChanged += new EventHandler(RecordingTimeChanged);
             RecordingTimeChanged();
 
+            ICheckBox.MouseClick += new MouseEventHandler(ICheckBoxClicked);
+            QCheckBox.MouseClick += new MouseEventHandler(QCheckBoxClicked);
+            ModCheckBox.MouseClick += new MouseEventHandler(ModCheckBoxClicked);
+            ArgCheckBox.MouseClick += new MouseEventHandler(ArgCheckBoxClicked);
+
             StartRecordingCheckBox.MouseClick += new MouseEventHandler(RecordingBtnClicked);
         }
 
-        private void RecordingBtnClicked(object sender, MouseEventArgs e)
+        #region threshold
+        private void ThresholdValueChanged(object sender, System.EventArgs e)
         {
-            _processor.RecordingEnabled = !_processor.RecordingEnabled;
-            RecordingTimeChanged();
+            ThresholdValueChanged();
+        }
+
+        private void ThresholdValueChanged()
+        {
+            _processor.ThresholdDb = ThresholdValue.Value - 100;
+            ThresholdValueLabel.Text = _processor.ThresholdDb.ToString();
+        }
+        #endregion
+
+        #region folder
+        private void ChangeFolderBtnClicked(object sender, MouseEventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                _processor.SelectedFolder = folderBrowserDialog1.SelectedPath;
+            };
+        }
+        #endregion
+
+        #region recording time
+        private void AutoRecordBtnClicked(object sender, MouseEventArgs e)
+        {
+            _processor.AutoRecord = AutoRecordCheckBox.Checked;
+
+            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Time [ms]:" : "Recording Time [ms]:";
         }
 
         private void RecordingTimeChanged(object sender, EventArgs e)
         {
             RecordingTimeChanged();
-        }
-
-        private void AutoRecordBtnClick(object sender, MouseEventArgs e)
-        {
-            _processor.AutoRecord = AutoRecordCheckBox.Checked;
-
-            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Time [ms]:" : "Recording Time [ms]:";
         }
 
         private void RecordingTimeChanged()
@@ -66,24 +89,36 @@ namespace SDRSharp.Plugin.SignalRecorder
                 RecordingTimeErrorLabel.Text = "Error";
             }
         }
+        #endregion
 
-        private void ChangeFolderBtnClicked(object sender, MouseEventArgs e)
+        #region recording data
+        private void ICheckBoxClicked(object sender, MouseEventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                _processor.SelectedFolder = folderBrowserDialog1.SelectedPath;
-            };
+            _processor.ISaveEnabled = ICheckBox.Checked;
         }
 
-        private void ThresholdValueChanged(object sender, System.EventArgs e)
+        private void QCheckBoxClicked(object sender, MouseEventArgs e)
         {
-            ThresholdValueChanged();
+            _processor.QSaveEnabled = QCheckBox.Checked;
         }
-        
-        private void ThresholdValueChanged()
+
+        private void ModCheckBoxClicked(object sender, MouseEventArgs e)
         {
-            _processor.ThresholdDb = ThresholdValue.Value - 100;
-            ThresholdValueLabel.Text = _processor.ThresholdDb.ToString();
+            _processor.ModSaveEnabled = ModCheckBox.Checked;
         }
+
+        private void ArgCheckBoxClicked(object sender, MouseEventArgs e)
+        {
+            _processor.ArgSaveEnabled = ArgCheckBox.Checked;
+        }
+        #endregion
+
+        #region recording btn
+        private void RecordingBtnClicked(object sender, MouseEventArgs e)
+        {
+            _processor.RecordingEnabled = !_processor.RecordingEnabled;
+            RecordingTimeChanged();
+        }
+        #endregion
     }
 }

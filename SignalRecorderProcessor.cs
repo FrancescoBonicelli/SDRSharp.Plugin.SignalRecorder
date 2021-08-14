@@ -12,6 +12,14 @@ namespace SDRSharp.Plugin.SignalRecorder
 {
     public class SignalRecorderProcessor : IIQProcessor, INotifyPropertyChanged
     {
+        public SignalRecorderProcessor()
+        {
+            // initial values
+            SelectedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            RecordingTime = 10;
+            _line = new StringBuilder();
+        }
+
         private double _sampleRate;
         private int _thresholdDb;
         private int _recordingTime;
@@ -20,8 +28,10 @@ namespace SDRSharp.Plugin.SignalRecorder
         private bool _recordingEnabled;
         private bool _recording;
         private bool _autoRecord;
+        private bool _iSaveEnabled, _qSaveEnabled, _modSaveEnabled, _argSaveEnabled;
         private string _selectedFolder;
         private string _fileName;
+        private StringBuilder _line;
 
         public double SampleRate
         {
@@ -75,6 +85,30 @@ namespace SDRSharp.Plugin.SignalRecorder
             set => _autoRecord = value;
         }
 
+        public bool ISaveEnabled
+        {
+            get => _iSaveEnabled;
+            set => _iSaveEnabled = value;
+        }
+
+        public bool QSaveEnabled
+        {
+            get => _qSaveEnabled;
+            set => _qSaveEnabled = value;
+        }
+
+        public bool ModSaveEnabled
+        {
+            get => _modSaveEnabled;
+            set => _modSaveEnabled = value;
+        }
+
+        public bool ArgSaveEnabled
+        {
+            get => _argSaveEnabled;
+            set => _argSaveEnabled = value;
+        }
+
         public string SelectedFolder
         {
             get => _selectedFolder;
@@ -121,7 +155,11 @@ namespace SDRSharp.Plugin.SignalRecorder
 
                         if (_recording)
                         {
-                            file.WriteLine(modulus);
+                            if (ISaveEnabled) _line.Append(buffer[i].Imag).Append('\t');
+                            if (QSaveEnabled) _line.Append(buffer[i].Real).Append('\t');
+                            if (ModSaveEnabled) _line.Append(modulus).Append('\t');
+                            if (ArgSaveEnabled) _line.Append(buffer[i].Argument()).Append('\t');
+                            if (_line.Length > 0) _line.Append('\n');
 
                             _samplesToBeSaved--;
 
@@ -135,6 +173,9 @@ namespace SDRSharp.Plugin.SignalRecorder
                             }
                         }
                     }
+
+                    if(_line.Length > 0) file.Write(_line);
+                    _line.Clear();
                 }
             }
         }

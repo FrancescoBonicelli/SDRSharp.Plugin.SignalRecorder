@@ -40,10 +40,6 @@ namespace SDRSharp.Plugin.SignalRecorder
             _processor = new SignalRecorderProcessor();
             _processor.Enabled = false;
 
-            // initial values
-            _processor.SelectedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            _processor.RecordingTime = 10;
-
             _control.RegisterStreamHook(_processor, ProcessorType.DecimatedAndFilteredIQ);
         }
 
