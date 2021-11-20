@@ -37,7 +37,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             set
             {
                 _recordingTime = value;
-                _samplesToBeSaved = (int)(SampleRate / 1000 * value);
+                ResetSamplesToBeSaved();
             }
         }
 
@@ -143,6 +143,7 @@ namespace SDRSharp.Plugin.SignalRecorder
                             // if neither full signal recording is selected
                             // nor a signal is detected, countdown the samples
                             if (!AutoRecord || db < ThresholdDb) _samplesToBeSaved--;
+                            else ResetSamplesToBeSaved();
 
                             if (_samplesToBeSaved <= 0)
                             {
@@ -156,6 +157,11 @@ namespace SDRSharp.Plugin.SignalRecorder
                     _line.Clear();
                 }
             }
+        }
+
+        private void ResetSamplesToBeSaved()
+        {
+            _samplesToBeSaved = (int)(SampleRate / 1000 * RecordingTime);
         }
     }
 }
