@@ -133,16 +133,26 @@ namespace SDRSharp.Plugin.SignalRecorder
                         float modulus = buffer[i].Modulus();
                         float db = 20 * (float)Math.Log10(modulus);
 
-                        if (db > ThresholdDb && RecordingEnabled) Recording = true;
+                        if (db > ThresholdDb && RecordingEnabled && !Recording)
+                        {
+                            Recording = true;
+
+                            _line.Append("Sample time [ms]").Append('\t');
+                            if (ISaveEnabled) _line.Append("I").Append('\t');
+                            if (QSaveEnabled) _line.Append("Q").Append('\t');
+                            if (ModSaveEnabled) _line.Append("Modulus").Append('\t');
+                            if (ArgSaveEnabled) _line.Append("Argument").Append('\t');
+                            _line.Append('\n');
+                        }
 
                         if (Recording)
                         {
-                            _line.Append(SampleCount++/SampleRate).Append('\t');
+                            _line.Append(SampleCount++/SampleRate*1000).Append('\t');
                             if (ISaveEnabled) _line.Append(buffer[i].Imag).Append('\t');
                             if (QSaveEnabled) _line.Append(buffer[i].Real).Append('\t');
                             if (ModSaveEnabled) _line.Append(modulus).Append('\t');
                             if (ArgSaveEnabled) _line.Append(buffer[i].Argument()).Append('\t');
-                            if (_line.Length > 0) _line.Append('\n');
+                            _line.Append('\n');
 
                             // if neither full signal recording is selected
                             // nor a signal is detected, countdown the samples
