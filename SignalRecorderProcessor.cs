@@ -55,12 +55,15 @@ namespace SDRSharp.Plugin.SignalRecorder
                 if (!value) _recording = false;
                 // if enabled create a new file name
                 else FileName = Path.Combine(SelectedFolder, DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
-                
+
                 _recordingEnabled = value;
                 RaisePropertyChanged(nameof(RecordingEnabled));
+                RaisePropertyChanged(nameof(RecordingDisabled));
                 RaisePropertyChanged(nameof(RecordingStatus));
             }
         }
+
+        public bool RecordingDisabled { get => !RecordingEnabled; }
 
         public bool Recording
         {
@@ -69,8 +72,11 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 _recording = value;
                 RaisePropertyChanged(nameof(RecordingStatus));
+                RaisePropertyChanged(nameof(NotRecording));
             }
         }
+
+        public bool NotRecording { get => !Recording; }
 
         public bool AutoRecord { get; set; }
 

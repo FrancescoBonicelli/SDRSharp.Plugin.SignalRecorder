@@ -24,6 +24,13 @@ namespace SDRSharp.Plugin.SignalRecorder
             StartRecordingCheckBox.DataBindings.Add("Checked", processor, nameof(processor.RecordingEnabled));
             RecordingStatusLabel.DataBindings.Add("Text", processor, nameof(processor.RecordingStatus));
 
+            // if recording enabled -> disable the file related buttons
+            ChangeFolderBtn.DataBindings.Add("Enabled", _processor, nameof(processor.RecordingDisabled));
+            ICheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
+            QCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
+            ModCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
+            ArgCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
+            
             ThresholdValue.ValueChanged += new EventHandler(ThresholdValueChanged);
             ThresholdValueChanged();
 
@@ -136,6 +143,8 @@ namespace SDRSharp.Plugin.SignalRecorder
         private void RecordingBtnClicked(object sender, MouseEventArgs e)
         {
             _processor.RecordingEnabled = !_processor.RecordingEnabled;
+
+            // process the recording time
             RecordingTimeChanged();
         }
         #endregion
