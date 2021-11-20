@@ -17,6 +17,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             // initial values
             SelectedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             RecordingTime = 10;
+            SampleCount = 0;
             _line = new StringBuilder();
         }
 
@@ -28,6 +29,8 @@ namespace SDRSharp.Plugin.SignalRecorder
         private StringBuilder _line;
 
         public double SampleRate { get; set; }
+
+        public double SampleCount { get; set; }
 
         public int ThresholdDb { get; set; }
 
@@ -51,7 +54,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 if (!value) _recording = false;
                 // if enabled create a new file name
-                else FileName = Path.Combine(SelectedFolder, DateTime.Now.ToString("yyyyMMddHHmmssffff") + "_" + SampleRate.ToString() + ".csv");
+                else FileName = Path.Combine(SelectedFolder, DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
                 
                 _recordingEnabled = value;
                 RaisePropertyChanged(nameof(RecordingEnabled));
@@ -134,6 +137,7 @@ namespace SDRSharp.Plugin.SignalRecorder
 
                         if (Recording)
                         {
+                            _line.Append(SampleCount++/SampleRate).Append('\t');
                             if (ISaveEnabled) _line.Append(buffer[i].Imag).Append('\t');
                             if (QSaveEnabled) _line.Append(buffer[i].Real).Append('\t');
                             if (ModSaveEnabled) _line.Append(modulus).Append('\t');
@@ -149,6 +153,7 @@ namespace SDRSharp.Plugin.SignalRecorder
                             {
                                 Recording = false;
                                 RecordingEnabled = false;
+                                SampleCount = 0;
                             }
                         }
                     }
