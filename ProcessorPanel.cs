@@ -47,7 +47,7 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             toolTip1.SetToolTip(ThresholdLabel, "Signal level above which recording starts");
             toolTip1.SetToolTip(FolderLabel, "Folder where the recorded data is stored");
-            toolTip1.SetToolTip(AutoRecordCheckBox, "If checked the recording continues till the signal is greather than the threshold");
+            toolTip1.SetToolTip(AutoRecordCheckBox, "If checked the recording continues as long as the signal is greather than the threshold");
             toolTip1.SetToolTip(RecordingTimeLabel, "How long the recording lasts");
             toolTip1.SetToolTip(DataLabel, "Data to be saved");
             toolTip1.SetToolTip(StartRecordingCheckBox, "Recording enable (the recording starts when the signal exceeds the threshold");
