@@ -50,6 +50,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.QCheckBox = new System.Windows.Forms.CheckBox();
             this.ModCheckBox = new System.Windows.Forms.CheckBox();
             this.ArgCheckBox = new System.Windows.Forms.CheckBox();
+            this.RecordingStatusLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ThresholdValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -146,9 +147,9 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.StartRecordingCheckBox.AutoSize = true;
             this.StartRecordingCheckBox.Location = new System.Drawing.Point(0, 343);
             this.StartRecordingCheckBox.Name = "StartRecordingCheckBox";
-            this.StartRecordingCheckBox.Size = new System.Drawing.Size(134, 24);
+            this.StartRecordingCheckBox.Size = new System.Drawing.Size(148, 24);
             this.StartRecordingCheckBox.TabIndex = 10;
-            this.StartRecordingCheckBox.Text = "Start Recording";
+            this.StartRecordingCheckBox.Text = "Enable Recording";
             this.StartRecordingCheckBox.UseVisualStyleBackColor = true;
             // 
             // AutoRecordCheckBox
@@ -250,10 +251,20 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.ArgCheckBox.Text = "Argument";
             this.ArgCheckBox.UseVisualStyleBackColor = true;
             // 
+            // RecordingStatusLabel
+            // 
+            this.RecordingStatusLabel.AutoSize = true;
+            this.RecordingStatusLabel.Location = new System.Drawing.Point(161, 344);
+            this.RecordingStatusLabel.Name = "RecordingStatusLabel";
+            this.RecordingStatusLabel.Size = new System.Drawing.Size(49, 20);
+            this.RecordingStatusLabel.TabIndex = 21;
+            this.RecordingStatusLabel.Text = "Status";
+            // 
             // ProcessorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.RecordingStatusLabel);
             this.Controls.Add(this.ArgCheckBox);
             this.Controls.Add(this.ModCheckBox);
             this.Controls.Add(this.QCheckBox);
@@ -305,5 +316,6 @@ namespace SDRSharp.Plugin.SignalRecorder
         private System.Windows.Forms.CheckBox QCheckBox;
         private System.Windows.Forms.CheckBox ModCheckBox;
         private System.Windows.Forms.CheckBox ArgCheckBox;
+        private System.Windows.Forms.Label RecordingStatusLabel;
     }
 }

@@ -20,33 +20,16 @@ namespace SDRSharp.Plugin.SignalRecorder
             _line = new StringBuilder();
         }
 
-        private double _sampleRate;
-        private int _thresholdDb;
         private int _recordingTime;
         private int _samplesToBeSaved;
-        private bool _enabled;
         private bool _recordingEnabled;
         private bool _recording;
-        private bool _autoRecord;
-        private bool _iSaveEnabled, _qSaveEnabled, _modSaveEnabled, _argSaveEnabled;
         private string _selectedFolder;
-        private string _fileName;
         private StringBuilder _line;
 
-        public double SampleRate
-        {
-            get => _sampleRate;
-            set
-            {
-                _sampleRate = value;
-            }
-        }
+        public double SampleRate { get; set; }
 
-        public int ThresholdDb
-        {
-            get => _thresholdDb;
-            set => _thresholdDb = value;
-        }
+        public int ThresholdDb { get; set; }
 
         public int RecordingTime
         {
@@ -59,11 +42,7 @@ namespace SDRSharp.Plugin.SignalRecorder
         }
 
         // plugin enabled from the SDRSharp menu
-        public bool Enabled
-        {
-            get => _enabled;
-            set => _enabled = value;
-        }
+        public bool Enabled { get; set; }
 
         public bool RecordingEnabled
         {
@@ -75,39 +54,30 @@ namespace SDRSharp.Plugin.SignalRecorder
                 else FileName = Path.Combine(SelectedFolder, DateTime.Now.ToString("yyyyMMddHHmmssffff") + "_" + SampleRate.ToString() + ".csv");
                 
                 _recordingEnabled = value;
-                RaisePropertyChanged("RecordingEnabled");
+                RaisePropertyChanged(nameof(RecordingEnabled));
+                RaisePropertyChanged(nameof(RecordingStatus));
             }
         }
 
-        public bool AutoRecord
+        public bool Recording
         {
-            get => _autoRecord;
-            set => _autoRecord = value;
+            get => _recording;
+            set
+            {
+                _recording = value;
+                RaisePropertyChanged(nameof(RecordingStatus));
+            }
         }
 
-        public bool ISaveEnabled
-        {
-            get => _iSaveEnabled;
-            set => _iSaveEnabled = value;
-        }
+        public bool AutoRecord { get; set; }
 
-        public bool QSaveEnabled
-        {
-            get => _qSaveEnabled;
-            set => _qSaveEnabled = value;
-        }
+        public bool ISaveEnabled { get; set; }
 
-        public bool ModSaveEnabled
-        {
-            get => _modSaveEnabled;
-            set => _modSaveEnabled = value;
-        }
+        public bool QSaveEnabled { get; set; }
 
-        public bool ArgSaveEnabled
-        {
-            get => _argSaveEnabled;
-            set => _argSaveEnabled = value;
-        }
+        public bool ModSaveEnabled { get; set; }
+
+        public bool ArgSaveEnabled { get; set; }
 
         public string SelectedFolder
         {
@@ -115,14 +85,23 @@ namespace SDRSharp.Plugin.SignalRecorder
             set
             {
                 _selectedFolder = value;
-                RaisePropertyChanged("SelectedFolder");
+                RaisePropertyChanged(nameof(SelectedFolder));
             }
         }
 
-        public string FileName
+        public string FileName { get; set; }
+
+        public string RecordingStatus
         {
-            get => _fileName;
-            set => _fileName = value;
+            get
+            {
+                if(RecordingEnabled)
+                {
+                    if (Recording) return "Recording";
+                    else return "Waiting";
+                }
+                return "";
+            }
         }
 
         #region Implementation of INotifyPropertyChanged
@@ -151,9 +130,9 @@ namespace SDRSharp.Plugin.SignalRecorder
                         float modulus = buffer[i].Modulus();
                         float db = 20 * (float)Math.Log10(modulus);
 
-                        if (db > ThresholdDb && RecordingEnabled) _recording = true;
+                        if (db > ThresholdDb && RecordingEnabled) Recording = true;
 
-                        if (_recording)
+                        if (Recording)
                         {
                             if (ISaveEnabled) _line.Append(buffer[i].Imag).Append('\t');
                             if (QSaveEnabled) _line.Append(buffer[i].Real).Append('\t');
@@ -161,14 +140,13 @@ namespace SDRSharp.Plugin.SignalRecorder
                             if (ArgSaveEnabled) _line.Append(buffer[i].Argument()).Append('\t');
                             if (_line.Length > 0) _line.Append('\n');
 
-                            _samplesToBeSaved--;
-
-                            // if full signal recording and signal readed, reset the samples
-                            if (AutoRecord && db > ThresholdDb) RecordingTime = RecordingTime;
+                            // if neither full signal recording is selected
+                            // nor a signal is detected, countdown the samples
+                            if (!AutoRecord || db < ThresholdDb) _samplesToBeSaved--;
 
                             if (_samplesToBeSaved <= 0)
                             {
-                                _recording = false;
+                                Recording = false;
                                 RecordingEnabled = false;
                             }
                         }

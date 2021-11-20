@@ -20,8 +20,9 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             InitializeComponent();
 
-            SelectedFolderLabel.DataBindings.Add("Text", processor, "SelectedFolder");
-            StartRecordingCheckBox.DataBindings.Add("Checked", processor, "RecordingEnabled");
+            SelectedFolderLabel.DataBindings.Add("Text", processor, nameof(processor.SelectedFolder));
+            StartRecordingCheckBox.DataBindings.Add("Checked", processor, nameof(processor.RecordingEnabled));
+            RecordingStatusLabel.DataBindings.Add("Text", processor, nameof(processor.RecordingStatus));
 
             ThresholdValue.ValueChanged += new EventHandler(ThresholdValueChanged);
             ThresholdValueChanged();
@@ -39,6 +40,18 @@ namespace SDRSharp.Plugin.SignalRecorder
             ArgCheckBox.MouseClick += new MouseEventHandler(ArgCheckBoxClicked);
 
             StartRecordingCheckBox.MouseClick += new MouseEventHandler(RecordingBtnClicked);
+
+            #region tooltips
+            // Create the ToolTip
+            ToolTip toolTip1 = new ToolTip();
+
+            toolTip1.SetToolTip(ThresholdLabel, "Signal level above which recording starts");
+            toolTip1.SetToolTip(FolderLabel, "Folder where the recorded data is stored");
+            toolTip1.SetToolTip(AutoRecordCheckBox, "If checked the recording continues till the signal is greather than the threshold");
+            toolTip1.SetToolTip(RecordingTimeLabel, "How long the recording lasts");
+            toolTip1.SetToolTip(DataLabel, "Data to be saved");
+            toolTip1.SetToolTip(StartRecordingCheckBox, "Recording enable (the recording starts when the signal exceeds the threshold");
+            #endregion
         }
 
         #region threshold
@@ -69,7 +82,12 @@ namespace SDRSharp.Plugin.SignalRecorder
         {
             _processor.AutoRecord = AutoRecordCheckBox.Checked;
 
-            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Time [ms]:" : "Recording Time [ms]:";
+            ToolTip toolTip1 = new ToolTip();
+
+            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Threshold [ms]:" : "Recording Time [ms]:";
+            toolTip1.SetToolTip(RecordingTimeLabel, AutoRecordCheckBox.Checked ?
+                                "How long the signal can stay lower than the treshold before stopping the recording" :
+                                "How long the recording lasts");
         }
 
         private void RecordingTimeChanged(object sender, EventArgs e)
@@ -86,6 +104,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             }
             catch
             {
+                _processor.RecordingEnabled = false;
                 RecordingTimeErrorLabel.Text = "Error";
             }
         }
