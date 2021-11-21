@@ -232,7 +232,9 @@ namespace SDRSharp.Plugin.SignalRecorder
                 plt.Legend(location: ScottPlot.Alignment.UpperRight);
 
                 // launch it in a PlotViewer
-                new ScottPlot.FormsPlotViewer(plt).Show();
+                var pltForm = new ScottPlot.FormsPlotViewer(plt);
+                pltForm.TopMost = true;
+                pltForm.Show();
 
                 return true;
             }
