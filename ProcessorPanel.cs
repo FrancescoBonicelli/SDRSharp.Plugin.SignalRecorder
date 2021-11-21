@@ -167,10 +167,15 @@ namespace SDRSharp.Plugin.SignalRecorder
                 PlotReportLabel.Text = "";
                 var lastFile = fileList.Last().FullName;
 
-                // show the plot form
-                PlotForm popup = new PlotForm(lastFile);
-                popup.ShowDialog();
-                popup.Dispose();
+                // read the csv file
+                var dataArray = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+                // create a ScottPlot
+                var plt = new ScottPlot.Plot();
+                plt.AddSignal(dataArray);
+
+                // launch it in a PlotViewer
+                new ScottPlot.FormsPlotViewer(plt).Show();
             }
             else
             {

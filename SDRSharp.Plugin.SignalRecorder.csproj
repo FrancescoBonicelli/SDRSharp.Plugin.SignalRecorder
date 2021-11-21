@@ -12,6 +12,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  
+  <PropertyGroup>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ScottPlot" Version="4.1.27" />
+    <PackageReference Include="ScottPlot.WinForms" Version="4.1.27" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="SDRSharp.Common">
