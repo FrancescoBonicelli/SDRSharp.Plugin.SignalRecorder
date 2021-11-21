@@ -113,31 +113,6 @@ namespace SDRSharp.Plugin.SignalRecorder
             }
         }
 
-        public string TimeRecord
-        {
-            get => "Sample time [ms]";
-        }
-
-        public string IRecord
-        {
-            get => "I";
-        }
-
-        public string QRecord
-        {
-            get => "Q";
-        }
-
-        public string ModRecord
-        {
-            get => "Modulus";
-        }
-
-        public string ArgRecord
-        {
-            get => "Argument";
-        }
-
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -168,11 +143,11 @@ namespace SDRSharp.Plugin.SignalRecorder
                         {
                             Recording = true;
 
-                            _line.Append(TimeRecord).Append('\t');
-                            if (ISaveEnabled) _line.Append(IRecord).Append('\t');
-                            if (QSaveEnabled) _line.Append(QRecord).Append('\t');
-                            if (ModSaveEnabled) _line.Append(ModRecord).Append('\t');
-                            if (ArgSaveEnabled) _line.Append(ArgRecord).Append('\t');
+                            _line.Append("Sample time[ms]").Append('\t');
+                            if (ISaveEnabled) _line.Append("I").Append('\t');
+                            if (QSaveEnabled) _line.Append("Q").Append('\t');
+                            if (ModSaveEnabled) _line.Append("Modulus").Append('\t');
+                            if (ArgSaveEnabled) _line.Append("Argument").Append('\t');
                             _line.Append('\n');
                         }
 
@@ -208,6 +183,60 @@ namespace SDRSharp.Plugin.SignalRecorder
         private void ResetSamplesToBeSaved()
         {
             _samplesToBeSaved = (int)(SampleRate / 1000 * RecordingTime);
+        }
+
+        public bool PlotValuesFromCsv()
+        {
+            // check if in the selected folder there is a valid file to be plotted
+            var fileList = new DirectoryInfo(SelectedFolder).GetFiles("SigRec_*.csv");
+            if (fileList.Any())
+            {
+                var lastFile = fileList.Last().FullName;
+                var data = new List<double[]>();
+                var headers = new List<string>();
+
+                // read the csv file
+                using (var reader = new StreamReader(lastFile))
+                {
+                    // read the header
+                    headers = reader.ReadLine().Split('\t').ToList();
+
+                    while (!reader.EndOfStream)
+                    {
+                        var values = reader.ReadLine().Split('\t');
+                        var dataRow = new double[headers.Count];
+
+                        // cycle over the columns
+                        for (int ind = 0; ind < headers.Count; ind++)
+                        {
+                            double.TryParse(values[ind], out var v);
+                            dataRow[ind] = v;
+                        }
+
+                        data.Add(dataRow);
+                    }
+                }
+
+                // create a ScottPlot
+                var plt = new ScottPlot.Plot();
+
+                plt.Title("Recorded data");
+                plt.XLabel(headers[0]);
+                plt.SetOuterViewLimits(data.First()[0] - 0.02 * data.Last()[0], data.Last()[0] + 0.02 * data.Last()[0]);
+
+                for (int ind = 1; ind < headers.Count; ind++)
+                {
+                    plt.AddSignalXY(data.Select(x => x[0]).ToArray(), data.Select(x => x[ind]).ToArray(), label: headers[ind]);
+                }
+
+                plt.Legend(location: ScottPlot.Alignment.UpperRight);
+
+                // launch it in a PlotViewer
+                new ScottPlot.FormsPlotViewer(plt).Show();
+
+                return true;
+            }
+            else return false;
         }
     }
 }
