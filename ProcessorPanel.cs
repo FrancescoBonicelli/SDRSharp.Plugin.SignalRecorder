@@ -161,7 +161,7 @@ namespace SDRSharp.Plugin.SignalRecorder
         private void PlotBtnClicked(object sender, MouseEventArgs e)
         {
             // check if in the selected folder there is a valid file to be plotted
-            var fileList = new DirectoryInfo(_processor.SelectedFolder).GetFiles().Where(x => x.Name.StartsWith("SigRec"));
+            var fileList = new DirectoryInfo(_processor.SelectedFolder).GetFiles("SigRec_*.csv");
             if (fileList.Any())
             {
                 PlotReportLabel.Text = "";
