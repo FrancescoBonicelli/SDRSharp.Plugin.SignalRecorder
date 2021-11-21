@@ -194,10 +194,16 @@ namespace SDRSharp.Plugin.SignalRecorder
                 // create a ScottPlot
                 var plt = new ScottPlot.Plot();
 
-                for(int ind = 1; ind < headers.Count; ind++)
+                plt.Title("Recorded data");
+                plt.XLabel(headers[0]);
+                plt.SetOuterViewLimits(data.First()[0] - 0.02 * data.Last()[0], data.Last()[0] + 0.02 * data.Last()[0]);
+
+                for (int ind = 1; ind < headers.Count; ind++)
                 {
-                    plt.AddScatter(data.Select(x=>x[0]).ToArray(), data.Select(x => x[ind]).ToArray());
+                    plt.AddSignalXY(data.Select(x=>x[0]).ToArray(), data.Select(x => x[ind]).ToArray(), label: headers[ind]);
                 }
+
+                plt.Legend(location: ScottPlot.Alignment.UpperRight);
 
                 // launch it in a PlotViewer
                 new ScottPlot.FormsPlotViewer(plt).Show();
