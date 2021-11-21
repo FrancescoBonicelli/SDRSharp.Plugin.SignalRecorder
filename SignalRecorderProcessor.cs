@@ -113,6 +113,31 @@ namespace SDRSharp.Plugin.SignalRecorder
             }
         }
 
+        public string TimeRecord
+        {
+            get => "Sample time [ms]";
+        }
+
+        public string IRecord
+        {
+            get => "I";
+        }
+
+        public string QRecord
+        {
+            get => "Q";
+        }
+
+        public string ModRecord
+        {
+            get => "Modulus";
+        }
+
+        public string ArgRecord
+        {
+            get => "Argument";
+        }
+
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -143,11 +168,11 @@ namespace SDRSharp.Plugin.SignalRecorder
                         {
                             Recording = true;
 
-                            _line.Append("Sample time [ms]").Append('\t');
-                            if (ISaveEnabled) _line.Append("I").Append('\t');
-                            if (QSaveEnabled) _line.Append("Q").Append('\t');
-                            if (ModSaveEnabled) _line.Append("Modulus").Append('\t');
-                            if (ArgSaveEnabled) _line.Append("Argument").Append('\t');
+                            _line.Append(TimeRecord).Append('\t');
+                            if (ISaveEnabled) _line.Append(IRecord).Append('\t');
+                            if (QSaveEnabled) _line.Append(QRecord).Append('\t');
+                            if (ModSaveEnabled) _line.Append(ModRecord).Append('\t');
+                            if (ArgSaveEnabled) _line.Append(ArgRecord).Append('\t');
                             _line.Append('\n');
                         }
 

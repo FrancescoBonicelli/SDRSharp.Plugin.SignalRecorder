@@ -166,13 +166,33 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 PlotReportLabel.Text = "";
                 var lastFile = fileList.Last().FullName;
+                var data = new List<double[]>();
 
                 // read the csv file
-                var dataArray = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+                using (var reader = new StreamReader(lastFile))
+                {
+                    // read the header
+                    var headers = reader.ReadLine().Split('\t');
+
+                    while (!reader.EndOfStream)
+                    {
+                        var values = reader.ReadLine().Split('\t');
+                        var dataRow = new double[values.Count()];
+
+                        // cycle over the columns
+                        for (int ind = 0; ind < values.Count(); ind++)
+                        {
+                            double.TryParse(values[ind], out var v);
+                            dataRow[ind] = v;
+                        }
+                        
+                        data.Add(dataRow);
+                    }
+                }
 
                 // create a ScottPlot
                 var plt = new ScottPlot.Plot();
-                plt.AddSignal(dataArray);
+                plt.AddScatter(data.Select(x=>x[0]).ToArray(), data.Select(x => x[1]).ToArray());
 
                 // launch it in a PlotViewer
                 new ScottPlot.FormsPlotViewer(plt).Show();
