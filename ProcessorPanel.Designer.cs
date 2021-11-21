@@ -51,6 +51,9 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.ModCheckBox = new System.Windows.Forms.CheckBox();
             this.ArgCheckBox = new System.Windows.Forms.CheckBox();
             this.RecordingStatusLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.PlotBtn = new System.Windows.Forms.Button();
+            this.PlotReportLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ThresholdValue)).BeginInit();
             this.SuspendLayout();
             // 
@@ -260,10 +263,41 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.RecordingStatusLabel.TabIndex = 21;
             this.RecordingStatusLabel.Text = "Status";
             // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label4.Location = new System.Drawing.Point(0, 379);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(255, 2);
+            this.label4.TabIndex = 22;
+            // 
+            // PlotBtn
+            // 
+            this.PlotBtn.Location = new System.Drawing.Point(0, 393);
+            this.PlotBtn.Name = "PlotBtn";
+            this.PlotBtn.Size = new System.Drawing.Size(252, 29);
+            this.PlotBtn.TabIndex = 23;
+            this.PlotBtn.Text = "Plot Last Recorded Data";
+            this.PlotBtn.UseVisualStyleBackColor = true;
+            // 
+            // PlotReportLabel
+            // 
+            this.PlotReportLabel.AutoSize = true;
+            this.PlotReportLabel.Location = new System.Drawing.Point(3, 434);
+            this.PlotReportLabel.Name = "PlotReportLabel";
+            this.PlotReportLabel.Size = new System.Drawing.Size(80, 20);
+            this.PlotReportLabel.TabIndex = 24;
+            this.PlotReportLabel.Text = "PlotReport";
+            // 
             // ProcessorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.PlotReportLabel);
+            this.Controls.Add(this.PlotBtn);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.RecordingStatusLabel);
             this.Controls.Add(this.ArgCheckBox);
             this.Controls.Add(this.ModCheckBox);
@@ -286,7 +320,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             this.Controls.Add(this.ThresholdValue);
             this.Controls.Add(this.ThresholdLabel);
             this.Name = "ProcessorPanel";
-            this.Size = new System.Drawing.Size(255, 378);
+            this.Size = new System.Drawing.Size(255, 467);
             ((System.ComponentModel.ISupportInitialize)(this.ThresholdValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -317,5 +351,8 @@ namespace SDRSharp.Plugin.SignalRecorder
         private System.Windows.Forms.CheckBox ModCheckBox;
         private System.Windows.Forms.CheckBox ArgCheckBox;
         private System.Windows.Forms.Label RecordingStatusLabel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button PlotBtn;
+        private System.Windows.Forms.Label PlotReportLabel;
     }
 }

@@ -54,7 +54,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 if (!value) _recording = false;
                 // if enabled create a new file name
-                else FileName = Path.Combine(SelectedFolder, DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
+                else FileName = Path.Combine(SelectedFolder, "SigRec_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
 
                 _recordingEnabled = value;
                 RaisePropertyChanged(nameof(RecordingEnabled));

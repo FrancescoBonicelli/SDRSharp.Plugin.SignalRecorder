@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             InitializeComponent();
 
+            #region data bindings
             SelectedFolderLabel.DataBindings.Add("Text", processor, nameof(processor.SelectedFolder));
             StartRecordingCheckBox.DataBindings.Add("Checked", processor, nameof(processor.RecordingEnabled));
             RecordingStatusLabel.DataBindings.Add("Text", processor, nameof(processor.RecordingStatus));
@@ -30,7 +32,9 @@ namespace SDRSharp.Plugin.SignalRecorder
             QCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
             ModCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
             ArgCheckBox.DataBindings.Add("Enabled", _processor, nameof(processor.NotRecording));
-            
+            #endregion
+
+            #region event bindings, labels initial value
             ThresholdValue.ValueChanged += new EventHandler(ThresholdValueChanged);
             ThresholdValueChanged();
 
@@ -47,6 +51,10 @@ namespace SDRSharp.Plugin.SignalRecorder
             ArgCheckBox.MouseClick += new MouseEventHandler(ArgCheckBoxClicked);
 
             StartRecordingCheckBox.MouseClick += new MouseEventHandler(RecordingBtnClicked);
+
+            PlotBtn.MouseClick += new MouseEventHandler(PlotBtnClicked);
+            PlotReportLabel.Text = "";
+            #endregion
 
             #region tooltips
             // Create the ToolTip
@@ -146,6 +154,28 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             // process the recording time
             RecordingTimeChanged();
+        }
+        #endregion
+
+        #region plot btn
+        private void PlotBtnClicked(object sender, MouseEventArgs e)
+        {
+            // check if in the selected folder there is a valid file to be plotted
+            var fileList = new DirectoryInfo(_processor.SelectedFolder).GetFiles().Where(x => x.Name.StartsWith("SigRec"));
+            if (fileList.Any())
+            {
+                PlotReportLabel.Text = "";
+                var lastFile = fileList.Last().FullName;
+
+                // show the plot form
+                PlotForm popup = new PlotForm(lastFile);
+                popup.ShowDialog();
+                popup.Dispose();
+            }
+            else
+            {
+                PlotReportLabel.Text = "No valid file in " + _processor.SelectedFolder;
+            }
         }
         #endregion
     }
