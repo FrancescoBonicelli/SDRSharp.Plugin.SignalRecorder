@@ -143,21 +143,21 @@ namespace SDRSharp.Plugin.SignalRecorder
                         {
                             Recording = true;
 
-                            _line.Append("Sample time[ms]").Append('\t');
-                            if (ISaveEnabled) _line.Append("I").Append('\t');
-                            if (QSaveEnabled) _line.Append("Q").Append('\t');
-                            if (ModSaveEnabled) _line.Append("Modulus").Append('\t');
-                            if (ArgSaveEnabled) _line.Append("Argument").Append('\t');
+                            _line.Append("Sample time[ms]");
+                            if (ISaveEnabled) _line.Append('\t').Append("I");
+                            if (QSaveEnabled) _line.Append('\t').Append("Q");
+                            if (ModSaveEnabled) _line.Append('\t').Append("Modulus");
+                            if (ArgSaveEnabled) _line.Append('\t').Append("Argument");
                             _line.Append('\n');
                         }
 
                         if (Recording)
                         {
-                            _line.Append(SampleCount++/SampleRate*1000).Append('\t');
-                            if (ISaveEnabled) _line.Append(buffer[i].Imag).Append('\t');
-                            if (QSaveEnabled) _line.Append(buffer[i].Real).Append('\t');
-                            if (ModSaveEnabled) _line.Append(modulus).Append('\t');
-                            if (ArgSaveEnabled) _line.Append(buffer[i].Argument()).Append('\t');
+                            _line.Append(SampleCount++/SampleRate*1000);
+                            if (ISaveEnabled) _line.Append('\t').Append(buffer[i].Imag);
+                            if (QSaveEnabled) _line.Append('\t').Append(buffer[i].Real);
+                            if (ModSaveEnabled) _line.Append('\t').Append(modulus);
+                            if (ArgSaveEnabled) _line.Append('\t').Append(buffer[i].Argument());
                             _line.Append('\n');
 
                             // if neither full signal recording is selected
