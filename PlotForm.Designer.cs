@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.formsPlot = new ScottPlot.FormsPlot();
+            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // formsPlot
@@ -40,14 +41,24 @@
             this.formsPlot.Location = new System.Drawing.Point(0, 0);
             this.formsPlot.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.formsPlot.Name = "formsPlot";
-            this.formsPlot.Size = new System.Drawing.Size(780, 450);
+            this.formsPlot.Size = new System.Drawing.Size(780, 420);
             this.formsPlot.TabIndex = 0;
+            // 
+            // flowLayoutPanel
+            // 
+            this.flowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel.Location = new System.Drawing.Point(12, 408);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(758, 33);
+            this.flowLayoutPanel.TabIndex = 1;
             // 
             // PlotForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 453);
+            this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.formsPlot);
             this.Name = "PlotForm";
             this.Text = "Recorded data";
@@ -58,5 +69,6 @@
         #endregion
 
         private ScottPlot.FormsPlot formsPlot;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
     }
 }
