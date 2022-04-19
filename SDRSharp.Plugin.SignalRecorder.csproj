@@ -1,37 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
-  <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+<PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Platforms>AnyCPU</Platforms>
     <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  
-  <PropertyGroup>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot" Version="4.1.27" />
-    <PackageReference Include="ScottPlot.WinForms" Version="4.1.27" />
+    <Reference Include="SDRSharp.Common">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\SDRSharp.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SDRSharp.PanView">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\SDRSharp.PanView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SDRSharp.Radio">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\SDRSharp.Radio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SDRSharp.Common">
-      <HintPath>..\lib\SDRSharp.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SDRSharp.PanView">
-      <HintPath>..\lib\SDRSharp.PanView.dll</HintPath>
-    </Reference>
-    <Reference Include="SDRSharp.Radio">
-      <HintPath>..\lib\SDRSharp.Radio.dll</HintPath>
-    </Reference>
+    <PackageReference Include="ScottPlot" Version="4.1.41" />
+    <PackageReference Include="ScottPlot.WinForms" Version="4.1.41" />
   </ItemGroup>
-
 </Project>
