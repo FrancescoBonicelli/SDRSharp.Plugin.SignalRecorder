@@ -7,14 +7,14 @@ Windows binary available in the Releases page.
 
 ![Plugin board](./Files/PluginBoard.png)
 
-1. The signal level (db) above witch the recording stars whan enabled.
+1. The signal level (db) above witch the recording starts when enabled.
 1. The folder where the recorded data will be saved.
 1. 
    - If NOT *Full Signal Record* the recording time. The time starts when the signal exceeds the threshold set in (1).
    - If *Full Signal Record* the time the signal can stay lower than the threshold set in (1) before stopping the recording.
 2. The data that will be saved.
-3. When checked the recorder waits for a signal greater than the threshold and than it starts to record the signal. It is possible to stop a recording unchecking the box.
-4. If desired the last recorded data can be plot directly.
+3. When checked the recorder waits for a signal greater than the threshold and than it starts to record the signal. The recording is automatically stopped when the time set in the previous point is elapsed. It is possible to manually stop a recording unchecking the box.
+4. If desired the last recorded data can be plotted directly.
 
 ![Plot example](./Files/RecordedDataPlot.png)
 
