@@ -8,13 +8,14 @@ Windows binary available in the Releases page.
 ![Plugin board](./Files/PluginBoard.png)
 
 1. The signal level (db) above witch the recording starts when enabled.
-1. The folder where the recorded data will be saved.
-1. 
+2. The folder where the recorded data will be saved.
+3. 
    - If NOT *Full Signal Record* the recording time. The time starts when the signal exceeds the threshold set in (1).
    - If *Full Signal Record* the time the signal can stay lower than the threshold set in (1) before stopping the recording.
-2. The data that will be saved.
-3. When checked the recorder waits for a signal greater than the threshold and than it starts to record the signal. The recording is automatically stopped when the time set in the previous point is elapsed. It is possible to manually stop a recording unchecking the box.
-4. If desired the last recorded data can be plotted directly.
+4. If set greather than 0 the maximum recording time per file. This option allows to split the records into multiple files.
+5. The data that will be saved.
+6. When checked the recorder waits for a signal greater than the threshold and than it starts to record the signal. The recording is automatically stopped when the time set in the previous point is elapsed. It is possible to manually stop a recording unchecking the box.
+7. If desired the last recorded data can be plotted directly.
 
 ![Plot example](./Files/RecordedDataPlot.png)
 
@@ -26,14 +27,14 @@ Copy the *SDRSharp.Plugin.SignalRecorder* and the two *ScottPlot* dlls into the 
 Enjoy.
 
 ## Compiling instructions
-(updated to april 2022)
+(updated to february 2023)
 
-Go to [Airspy website download page](https://airspy.com/download/) and download the *SDR# SDK for Plugin Developers* (for .NET 6).
+Go to [Airspy website download page](https://airspy.com/download/) and download the *SDR# SDK for Plugin Developers* (for .NET 7).
 
-Clone the *SDRSharp.Plugin.SignalRecorder* repository inside the solution folder.
+Clone the *SDRSharp.Plugin.SignalRecorder* repository inside the sdrplugins solution folder.
 
 Make sure the project folder is next to the SDK *lib* folder.
 
 Open the project with Visual Studio 2022 and compile the project.
 
-The *SDRSharp.Plugin.SignalRecorder* with the *ScottPlot* dlls are found inside the *SDRSharp.Plugin.SignalRecorder\bin\Release\net6.0-windows\\* (or *SDRSharp.Plugin.SignalRecorder\bin\Debug\net6.0-windows\\*) folder.
+The *SDRSharp.Plugin.SignalRecorder* with the *ScottPlot* dlls are found inside the *sdrplugins\Release\net7.0-windows\\* (or *sdrplugins\Debug\net7.0-windows\\*) folder.
