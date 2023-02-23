@@ -22,7 +22,9 @@ namespace SDRSharp.Plugin.SignalRecorder
         }
 
         private int _recordingTime;
+        private int _timePerFile;
         private int _samplesToBeSaved;
+        private int _samplesPerFile;
         private bool _recordingEnabled;
         private bool _recording;
         private string _selectedFolder;
@@ -44,6 +46,17 @@ namespace SDRSharp.Plugin.SignalRecorder
             }
         }
 
+        public int TimePerFile
+        {
+            get => _timePerFile;
+            set
+            {
+                _timePerFile = value;
+                ResetSamplesPerFile();
+            }
+        }
+
+
         // plugin enabled from the SDRSharp menu
         public bool Enabled { get; set; }
 
@@ -54,7 +67,7 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 if (!value) _recording = false;
                 // if enabled create a new file name
-                else FileName = Path.Combine(SelectedFolder, "SigRec_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
+                else UpdateFileName();
 
                 _recordingEnabled = value;
                 RaisePropertyChanged(nameof(RecordingEnabled));
@@ -104,7 +117,7 @@ namespace SDRSharp.Plugin.SignalRecorder
         {
             get
             {
-                if(RecordingEnabled)
+                if (RecordingEnabled)
                 {
                     if (Recording) return "Recording";
                     else return "Waiting";
@@ -132,51 +145,62 @@ namespace SDRSharp.Plugin.SignalRecorder
         {
             if (RecordingEnabled)
             {
-                using (StreamWriter file = new StreamWriter(FileName, append: true))
+                //using (StreamWriter file = new StreamWriter(FileName, append: true))
+                const int BufferSize = 65536;  // 64 Kilobytes
+                StreamWriter file = new StreamWriter(FileName, append: true, Encoding.UTF8, BufferSize);
+
+                for (int i = 0; i < length; i++)
                 {
-                    for (int i = 0; i < length; i++)
+                    float modulus = buffer[i].Modulus();
+                    float db = 20 * (float)Math.Log10(modulus);
+
+                    if (db > ThresholdDb && RecordingEnabled && !Recording)
                     {
-                        float modulus = buffer[i].Modulus();
-                        float db = 20 * (float)Math.Log10(modulus);
+                        Recording = true;
 
-                        if (db > ThresholdDb && RecordingEnabled && !Recording)
-                        {
-                            Recording = true;
-
-                            _line.Append("Sample time[ms]");
-                            if (ISaveEnabled) _line.Append('\t').Append("I");
-                            if (QSaveEnabled) _line.Append('\t').Append("Q");
-                            if (ModSaveEnabled) _line.Append('\t').Append("Modulus");
-                            if (ArgSaveEnabled) _line.Append('\t').Append("Argument");
-                            _line.Append('\n');
-                        }
-
-                        if (Recording)
-                        {
-                            _line.Append(SampleCount++/SampleRate*1000);
-                            if (ISaveEnabled) _line.Append('\t').Append(buffer[i].Imag);
-                            if (QSaveEnabled) _line.Append('\t').Append(buffer[i].Real);
-                            if (ModSaveEnabled) _line.Append('\t').Append(modulus);
-                            if (ArgSaveEnabled) _line.Append('\t').Append(buffer[i].Argument());
-                            _line.Append('\n');
-
-                            // if neither full signal recording is selected
-                            // nor a signal is detected, countdown the samples
-                            if (!AutoRecord || db < ThresholdDb) _samplesToBeSaved--;
-                            else ResetSamplesToBeSaved();
-
-                            if (_samplesToBeSaved <= 0)
-                            {
-                                Recording = false;
-                                RecordingEnabled = false;
-                                SampleCount = 0;
-                            }
-                        }
+                        MakeFileHeader();
+                        file.Write(_line);
+                        _line.Clear();
                     }
 
-                    if(_line.Length > 0) file.Write(_line);
-                    _line.Clear();
+                    if (Recording)
+                    {
+                        _line.Append(SampleCount++ / SampleRate * 1000);
+                        if (ISaveEnabled) _line.Append('\t').Append(buffer[i].Imag);
+                        if (QSaveEnabled) _line.Append('\t').Append(buffer[i].Real);
+                        if (ModSaveEnabled) _line.Append('\t').Append(modulus);
+                        if (ArgSaveEnabled) _line.Append('\t').Append(buffer[i].Argument());
+                        _line.Append('\n');
+                        file.Write(_line);
+                        _line.Clear();
+
+                        // if neither full signal recording is selected
+                        // nor a signal is detected, countdown the samples
+                        if (!AutoRecord || db < ThresholdDb) _samplesToBeSaved--;
+                        else ResetSamplesToBeSaved();
+
+                        if (_samplesToBeSaved <= 0)
+                        {
+                            Recording = false;
+                            RecordingEnabled = false;
+                            SampleCount = 0;
+                        }
+
+                        if(_samplesPerFile > 0) _samplesPerFile--;
+                        if(_samplesPerFile == 0 && Recording)
+                        {
+                            file.Close();
+                            UpdateFileName();
+                            ResetSamplesPerFile();
+                            file = new StreamWriter(FileName, append: true, Encoding.UTF8, BufferSize);
+                            MakeFileHeader();
+                            file.Write(_line);
+                            _line.Clear();
+                        }
+                    }
                 }
+
+                file.Close();
             }
         }
 
@@ -185,17 +209,44 @@ namespace SDRSharp.Plugin.SignalRecorder
             _samplesToBeSaved = (int)(SampleRate / 1000 * RecordingTime);
         }
 
+        private void ResetSamplesPerFile()
+        {
+            _samplesPerFile = (int)(SampleRate / 1000 * TimePerFile);
+        }
+
+        private void UpdateFileName()
+        {
+            FileName = Path.Combine(SelectedFolder, "SigRec_" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".csv");
+        }
+
+        private void MakeFileHeader()
+        {
+            _line.Append("Sample time[ms]");
+            if (ISaveEnabled) _line.Append('\t').Append("I");
+            if (QSaveEnabled) _line.Append('\t').Append("Q");
+            if (ModSaveEnabled) _line.Append('\t').Append("Modulus");
+            if (ArgSaveEnabled) _line.Append('\t').Append("Argument");
+            _line.Append('\n');
+        }
+
         public bool PlotValuesFromCsv()
         {
             // check if in the selected folder there is a valid file to be plotted
             var fileList = new DirectoryInfo(SelectedFolder).GetFiles("SigRec_*.csv");
             if (fileList.Any())
             {
-                var lastFile = fileList.Last().FullName;
-                
-                new PlotForm(lastFile).ShowDialog();
+                try
+                {
+                    var lastFile = fileList.Last().FullName;
 
-                return true;
+                    new PlotForm(lastFile).ShowDialog();
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
             else return false;
         }

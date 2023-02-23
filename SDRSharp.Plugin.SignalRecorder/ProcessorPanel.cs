@@ -44,6 +44,8 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             RecordingTimeValue.TextChanged += new EventHandler(RecordingTimeChanged);
             RecordingTimeChanged();
+            TimePerFileValue.TextChanged += new EventHandler(TimePerFileChanged);
+            TimePerFileChanged();
 
             ICheckBox.MouseClick += new MouseEventHandler(ICheckBoxClicked);
             QCheckBox.MouseClick += new MouseEventHandler(QCheckBoxClicked);
@@ -99,7 +101,7 @@ namespace SDRSharp.Plugin.SignalRecorder
 
             ToolTip toolTip1 = new ToolTip();
 
-            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Threshold [ms]:" : "Recording Time [ms]:";
+            RecordingTimeLabel.Text = AutoRecordCheckBox.Checked ? "Low Signal Time [ms]:" : "Recording Time [ms]:";
             toolTip1.SetToolTip(RecordingTimeLabel, AutoRecordCheckBox.Checked ?
                                 "How long the signal can stay lower than the treshold before stopping the recording" :
                                 "How long the recording lasts");
@@ -108,6 +110,11 @@ namespace SDRSharp.Plugin.SignalRecorder
         private void RecordingTimeChanged(object sender, EventArgs e)
         {
             RecordingTimeChanged();
+        }
+
+        private void TimePerFileChanged(object sender, EventArgs e)
+        {
+            TimePerFileChanged();
         }
 
         private void RecordingTimeChanged()
@@ -121,6 +128,20 @@ namespace SDRSharp.Plugin.SignalRecorder
             {
                 _processor.RecordingEnabled = false;
                 RecordingTimeErrorLabel.Text = "Error";
+            }
+        }
+
+        private void TimePerFileChanged()
+        {
+            try
+            {
+                _processor.TimePerFile = Convert.ToInt32(TimePerFileValue.Text);
+                TimePerFileErrorLabel.Text = "";
+            }
+            catch
+            {
+                _processor.RecordingEnabled = false;
+                TimePerFileErrorLabel.Text = "Error";
             }
         }
         #endregion
@@ -163,5 +184,65 @@ namespace SDRSharp.Plugin.SignalRecorder
             PlotReportLabel.Text = _processor.PlotValuesFromCsv() ? "" : "No valid file in " + _processor.SelectedFolder;
         }
         #endregion
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ModCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void QCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ArgCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RecordingStatusLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartRecordingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ICheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PlotBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PlotReportLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
